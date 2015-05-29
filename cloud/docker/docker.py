@@ -255,6 +255,11 @@ options:
         docker-py >= 0.5.0.
     default: false
     version_added: "1.9"
+  cap-add:
+    description:
+      - Add Docker container capabilities
+    default: null
+    version_added: "1.9"
 
 author: Cove Schneider, Joshua Conner, Pavel Antonov, Ash Wilson
 requirements:
@@ -1252,6 +1257,7 @@ class DockerManager(object):
             'privileged': self.module.params.get('privileged'),
             'links': self.links,
             'network_mode': self.module.params.get('net'),
+            'cap_add': self.module.params.get('cap_add'),
         }
 
         optionals = {}
@@ -1475,6 +1481,7 @@ def main():
             net             = dict(default=None),
             pid             = dict(default=None),
             insecure_registry = dict(default=False, type='bool'),
+            cap_add         = dict(required=False, default=None, type='list'),
         ),
         required_together = (
             ['tls_client_cert', 'tls_client_key'],
